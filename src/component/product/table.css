@@ -1,0 +1,35 @@
+.Table {
+ 
+
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    border: 1px solid;
+    font-size: 1rem;
+    margin: 0.5rem;
+    line-height: 1.5;
+    width:92vmax;
+  }
+     .TableHeader
+     {
+      display: none;
+        font-weight: 700;
+        
+      
+    }
+    .TableRow
+    {
+      width: 100%;
+        display: flex;
+        flex-flow: row nowrap;
+      }
+      .TableRowItem
+       {
+        display: flex;
+        flex-flow: row nowrap;
+        flex-grow: 1;
+        flex-basis: 0;
+        padding: 0.5em;
+       
+      }
+    
