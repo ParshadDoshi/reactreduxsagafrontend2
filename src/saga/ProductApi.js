@@ -8,9 +8,9 @@ const products = async () => {
 }
 const getproduct = async id => await axios.get(`http://localhost:5000/products/${id}`);
 const addproduct = async data => await axios.post('http://localhost:5000/products/add', data);
-const editproduct = async (_id, pdata) => {
-
-    let { data } = await axios.put(`http://localhost:5000/products/update/${_id}`, pdata)
+const editproduct = async (id, name, price) => {
+    console.log("IN Edit PRODUCT API ID IS" + id)
+    let { data } = await axios.put(`http://localhost:5000/products/update/${id}`, { name, price })
     return data
 }
 const deleteproduct = async _id => {

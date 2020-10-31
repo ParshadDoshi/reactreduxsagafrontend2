@@ -2,44 +2,48 @@ import React, { useEffect } from "react";
 import { useToasts } from 'react-toast-notifications'
 import { useSelector, useDispatch } from 'react-redux'
 import ProductListDetails from './../product/ProductListDetails'
-import { fetchProducts } from './../../action/ProductAction'
+import { fetchProducts, fetchProductsSuccess, fetchProductsFailure } from './../../action/ProductAction'
 import { Link } from 'react-router-dom'
-import { useHistory } from "react-router-dom";
-
+import { FadeLoader } from "react-spinners";
 import './table.css'
 
-function ProductList({ match }) {
-
-  const dispatch = useDispatch();
-
-  const loading = useSelector(state => state.loading)
-  const products = useSelector(state => state.products);
+function ProductList() {
 
   const { addToast } = useToasts()
+  const dispatch = useDispatch();
+  const loading = useSelector(state => state.ProductReducer.loading)
+  const products = useSelector(state => state.ProductReducer.products);
 
-  const success = useSelector(state => state.success)
+  /* const onSuccess = data => {
 
+    dispatch(fetchProductsSuccess(data))
+  }
+  const onFailure = err => {
+    addToast('Server Fetch Error', { appearance: 'error', autoDismiss: true, autoDismissTimeout: 5000 })
+    dispatch(fetchProductsFailure())
+  } */
 
+  let NoproductStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'red'
 
-
-
+  }
 
   useEffect(() => {
 
     dispatch(fetchProducts())
 
-
-
   }, [])
 
-
-  if (loading) return <p>Loading...</p>
-  // if (products.length === 0) return <div>No Products.</div>
+  if (loading) return <FadeLoader color={"lightblue"} size={150} style={NoproductStyle} />
 
   return (
     <div>
-      <Link to={`products/create`} style={{ display: 'flex', flexDirection: 'row-reverse' }}>Add Product</Link>
-      {products.length > 0 ? (
+
+      { products.length > 0 && <div>
+        <Link to={`products/create`} style={{ display: 'flex', flexDirection: 'row-reverse' }}>Add Product</Link>
         <div className="Table">
           <div className="TableRow TableHeader" >
             <div className="TableRowItem">Item Name</div>
@@ -49,13 +53,11 @@ function ProductList({ match }) {
             <div className="TableRowItem"></div>
           </div>
           {products.map(p => <ProductListDetails product={p} />)}
-        </div>) : (
-          <p>No Products to display</p>
-        )}
+        </div>
+      </div>}
     </div>
 
   )
 }
-
 
 export default ProductList

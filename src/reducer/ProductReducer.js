@@ -1,11 +1,10 @@
 
 
-let initState = { products: [], product: {}, loading: true, success: undefined }
-
+let initState = { products: [], product: {}, loading: true }
 
 export const ProductReducer = (state = initState, action) => {
 
-  // console.log("Action Type is" + action.type + JSON.stringify(action))
+  //console.log("Action Type is" + action.type + JSON.stringify(action))
   switch (action.type) {
     case 'FETCH_PRODUCTS':
     case 'DELETE_PRODUCT':
@@ -16,37 +15,37 @@ export const ProductReducer = (state = initState, action) => {
         ...state,
         loading: true,
 
-
       }
     case 'FETCH_PRODUCTS_SUCCESS':
 
       return {
         ...state,
         products: action.data.products,
-        success: action.data.success,
+
         loading: false
       }
     case 'FETCH_PRODUCT_SUCCESS':
       return {
         ...state,
         product: action.data.product,
-        success: action.data.success,
+
         loading: false
       }
     case 'CREATE_PRODUCT_SUCCESS':
       return {
         ...state,
         products: state.products.concat(action.data.product),
-        product: action.data.product,
-        success: action.data.success,
+        // product: action.data.product,
+
         loading: false
       }
     case 'EDIT_PRODUCT_SUCCESS':
+      let product = action.data.product
       return {
         ...state,
-        products: state.products.concat(action.data.product),
-        product: action.data.product,
-        success: action.data.success,
+        products: { ...state.products, product },
+        //product: {},
+
         loading: false
       }
     case 'DELETE_PRODUCT_SUCCESS':
@@ -54,7 +53,7 @@ export const ProductReducer = (state = initState, action) => {
         ...state,
         products: state.products.filter(product => product._id !== action.data.id),
         product: action.data.product,
-        success: action.data.success,
+
         loading: false
       }
     case 'ADD_PRODUCT_FAILURE':
@@ -73,5 +72,3 @@ export const ProductReducer = (state = initState, action) => {
       return state
   }
 }
-
-

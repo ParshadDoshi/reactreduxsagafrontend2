@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 
 import {
-    fetchProductsSuccess, fetchProductsFailure, FETCH_PRODUCTS,
+    FETCH_PRODUCTS, fetchProductsSuccess, fetchProductsFailure,
     FETCH_PRODUCT, fetchProductSuccess, fetchProductFailure,
     CREATE_PRODUCT, createProductSuccess, createProductFailure,
     EDIT_PRODUCT, editProductSuccess, editProductFailure,
@@ -13,66 +13,62 @@ function* getProducts() {
 
     try {
         const data = yield call(api.products);
-        yield put(fetchProductsSuccess(data))
+        yield put(fetchProductsSuccess(data));
 
     } catch (error) {
         console.log("Products Fetch Error")
-        yield put(fetchProductsFailure())
+        yield put(fetchProductsFailure());
         console.error(error) // eslint-disable-line
 
     }
 }
 function* getProduct(action) {
-
+    const { id } = action;
     try {
-        const { id } = action;
         const { data } = yield call(api.getproduct, id);
-
         yield put(fetchProductSuccess(data));
     } catch (err) {
         console.log("Products Fetch Error")
-
-
+        //onFailure(err)
         yield put(fetchProductFailure())
-
     }
 }
 
 function* createProduct(action) {
-
-
+    console.log("Action create Product is" + JSON.stringify(action))
+    const { onSuccess, onFailure } = action
     try {
-        console.log("Action DAta is" + JSON.stringify(action.data))
 
-
-        const imgname = yield call(api.addImage, action.data.imagename)
+        const imgname = yield call(api.addImage, action.imagename)
         //console.log("Image Name is"+JSON.stringify( imgname))
-        const { name, price } = action.data;
-        const { data } = yield call(api.addproduct, { name: name, price: price, imagefile: imgname.data });
+        const { name, price } = action;
+        const { data } = yield call(api.addproduct, { name, price, imagefile: imgname.data });
 
         //const  {data}= yield call(api.products);
         console.log("add Product saga" + JSON.stringify(data))
-        yield put(createProductSuccess(data));
+        //yield put(createProductSuccess(data));
+        onSuccess(data)
 
     } catch (err) {
-        yield put(createProductFailure());
+        //yield put(createProductFailure());
+        onFailure(err)
         console.log(err);
     }
 }
 
 function* editProduct(action) {
     try {
-        //  console.log("in saga Update Product"+ JSON.stringify(action))
-        const { product } = action.payload;
+        console.log("in saga Update Product" + JSON.stringify(action))
+        const { name, price } = action.payload;
         const id = action.payload.id
-        //   console.log("data is in update product"+ JSON.stringify(data) + " ID "+ _id)
-        const data = yield call(api.editproduct, id, product);
+        console.log("edit PROduct Saga" + " ID " + id + "name" + name + "Price" + price)
+        const data = yield call(api.editproduct, id, name, price);
         //const response = yield call(api.products);
         console.log("Response in updateProduct" + JSON.stringify(data))
-        yield put(editProductSuccess(data));
+        //yield put(editProductSuccess(data));
     } catch (err) {
         console.log(err);
-        yield put(editProductFailure());
+        //yield put(editProductFailure());
     }
 }
 
@@ -98,7 +94,6 @@ export default function* ProductSaga() {
     yield takeLatest(DELETE_PRODUCT, deleteProduct);
 }
 
-
 /*
 function* getproduct(action) {
     try {
@@ -111,7 +106,6 @@ function* getproduct(action) {
     }
 }
 
-
 function* removeproduct(action) {
     try {
         // console.log("REMOEV PROduct sasga"+ JSON.stringify(action))
@@ -123,11 +117,6 @@ function* removeproduct(action) {
         console.log(err);
     }
 }
-
-
-
-
-
 
 function* updateproduct(action) {
     try {

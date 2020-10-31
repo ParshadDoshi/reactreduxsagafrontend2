@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-
+import 'bootstrap/dist/css/bootstrap.css';//to use bootstap
+import 'font-awesome/css/font-awesome.min.css';//to use font awesome fa fa cartIcon
 ReactDOM.render(
   <React.StrictMode>
     <App />

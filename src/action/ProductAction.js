@@ -11,7 +11,6 @@ export const CREATE_PRODUCT = "CREATE_PRODUCT";
 export const CREATE_PRODUCT_FAILURE = "CREATE_PRODUCT_FAILURE";
 export const CREATE_PRODUCT_SUCCESS = "CREATE_PRODUCT_SUCCESS";
 
-
 export const EDIT_PRODUCT = "EDIT_PRODUCT";
 export const EDIT_PRODUCT_FAILURE = "EDIT_PRODUCT_FAILURE";
 export const EDIT_PRODUCT_SUCCESS = "EDIT_PRODUCT_SUCCESS";
@@ -20,18 +19,25 @@ export const DELETE_PRODUCT = "DELETE_PRODUCT";
 export const DELETE_PRODUCT_FAILURE = "DELETE_PRODUCT_FAILURE";
 export const DELETE_PRODUCT_SUCCESS = "DELETE_PRODUCT_SUCCESS";
 
-
-export const fetchProducts = () => ({ type: FETCH_PRODUCTS });
+export const fetchProducts = (onSuccess, onFailure) => {
+    return {
+        type: FETCH_PRODUCTS,
+        onSuccess,
+        onFailure,
+    }
+}
 
 export const fetchProductsSuccess = data => ({ type: FETCH_PRODUCTS_SUCCESS, data });
 
 export const fetchProductsFailure = () => ({ type: FETCH_PRODUCTS_FAILURE });
 
-export const fetchProduct = id => {
+export const fetchProduct = (id, onSuccess, onFailure) => {
 
     return {
         type: FETCH_PRODUCT,
-        id: id
+        id,
+        onSuccess,
+        onFailure
     }
 }
 
@@ -39,18 +45,27 @@ export const fetchProductSuccess = data => ({ type: FETCH_PRODUCT_SUCCESS, data 
 
 export const fetchProductFailure = () => ({ type: FETCH_PRODUCT_FAILURE });
 
-export const createProduct = data => ({ type: CREATE_PRODUCT, data });
+export const createProduct = ({ name, price, imagename }) => {
+    return {
+        type: CREATE_PRODUCT,
+        name,
+        imagename,
+        price
+
+    };
+}
 
 export const createProductSuccess = data => ({ type: CREATE_PRODUCT_SUCCESS, data });
 
 export const createProductFailure = () => ({ type: CREATE_PRODUCT_FAILURE });
 
-export const editProduct = (id, data) => {
+export const editProduct = (id, name, price) => {
     return {
         type: EDIT_PRODUCT,
         payload: {
-            id: id,
-            product: data
+            id,
+            name,
+            price
         }
     }
 }

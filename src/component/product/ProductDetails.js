@@ -1,20 +1,31 @@
 import React, { useEffect } from 'react';
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchProduct } from './../../action/ProductAction'
-
+import { fetchProduct, fetchProductSuccess, fetchProductFailure } from './../../action/ProductAction'
+import { useToasts } from 'react-toast-notifications'
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 export const ProductDetails = ({ match }) => {
+  const { addToast } = useToasts()
   console.log("Match In Product Details" + JSON.stringify(match))
+  const location = useLocation();
+  console.log("Location IS:" + JSON.stringify(location))
 
+  const loading = useSelector(state => state.ProductReducer.loading)
+
+  const onSuccess = data => {
+    dispatch(fetchProductSuccess(data))
+  }
+  const onFailure = err => {
+    addToast('Server Fetch Error', { appearance: 'error', autoDismiss: true, autoDismissTimeout: 5000 })
+    // dispatch(fetchProductFailure())
+  }
   const row = {
     display: 'flex',
     'flex-direction': 'row',
     'flex-wrap': 'wrap',
     width: '100%'
   };
-
 
   const column = {
     display: 'flex',
@@ -23,35 +34,17 @@ export const ProductDetails = ({ match }) => {
     flex: 1
   }
 
-
   const history = useHistory()
   const dispatch = useDispatch();
-  const product = useSelector(state => state.product)
-  const success = useSelector(state => state.success)
-
+  const product = useSelector(state => state.ProductReducer.product)
 
   useEffect(() => {
+    console.log("PRODUCT IS" + JSON.stringify(product))
+    dispatch(fetchProduct(match.params.id, onSuccess, onFailure))
+  }, [])
 
-    if (match.path === "/products/:id") {
-
-      history.replace(`/products/${match.params.id}`)
-    }
-
-    dispatch(fetchProduct(match.params.id))
-
-    console.log("SUCCESS IN PRODUCT DETAILS IS" + success)
-    if (success === false) {
-      history.push('/*')
-    }
-
-
-  }, [success])
-
-
-
-
-  function gotoProducts() {
-
+  const gotoProducts = () => {
+    console.log('goto called');
     history.push('/products')
   }
 
@@ -73,7 +66,6 @@ export const ProductDetails = ({ match }) => {
         <button onClick={gotoProducts}>Go back to Product List</button>
       </div>
     </div>
-
 
   );
 
