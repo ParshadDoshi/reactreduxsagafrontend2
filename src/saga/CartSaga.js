@@ -26,15 +26,15 @@ function* addCart(action) {
     //const { onSuccess, onFailure } = action
     try {
 
-        const { userId, quantity, productId } = action;
+        const { userId, quantity, productId, option } = action;
         //const productId = action.id
-        console.log("API ADD CART" + userId + "PId" + productId)
-        const { data } = yield call(api.addcart, userId, productId, quantity);
+        console.log("API ADD CART" + userId + "PId" + productId + "QTY" + quantity)
+        const { data } = yield call(api.addcart, userId, productId, quantity, option);
 
         //const  {data}= yield call(api.products);
         console.log("add Cart saga" + JSON.stringify(data))
         //yield put(createProductSuccess(data));
-        action.onSuccess()
+        action.onSuccess(data)
 
     } catch (err) {
         //yield put(createProductFailure());

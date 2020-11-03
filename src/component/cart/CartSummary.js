@@ -12,7 +12,7 @@ export default function CartSummary() {
         if (cartItemsTotal > 0 && isLoggedIn) {
             return <span>
                 {cartItemsTotal} item(s),
-                ${cartPrice.toFixed(2)}
+
             </span>
         } else {
             return <span>Your cart: (empty) </span>

@@ -13,7 +13,9 @@ export default function CartReducer(state = initState, action) {
                 ...state
             }
         case ADD_CART_SUCCESS:
-            return { ...state }
+            return {
+                ...state,
+            }
         /*  const p = action.payload.product;
          const q = action.payload.quantity;
          let existing = state.cart.find(item => item.product.id === p.id);
