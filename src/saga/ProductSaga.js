@@ -35,24 +35,23 @@ function* getProduct(action) {
 }
 
 function* createProduct(action) {
+
     console.log("Action create Product is" + JSON.stringify(action))
     const { onSuccess, onFailure } = action
     try {
 
         const imgname = yield call(api.addImage, action.imagename)
-        //console.log("Image Name is"+JSON.stringify( imgname))
-        const { name, price } = action;
-        const { data } = yield call(api.addproduct, { name, price, imagefile: imgname.data });
 
-        //const  {data}= yield call(api.products);
+        const { name, price } = action;
+        let { data } = yield call(api.addproduct, { name, price, imagefile: imgname.data });
         console.log("add Product saga" + JSON.stringify(data))
-        //yield put(createProductSuccess(data));
         onSuccess(data)
 
     } catch (err) {
         //yield put(createProductFailure());
-        onFailure(err)
-        console.log(err);
+        console.log("ERROR IS" + JSON.stringify(err.response.data));
+        onFailure(err.response.data)
+
     }
 }
 

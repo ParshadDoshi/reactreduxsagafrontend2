@@ -7,4 +7,5 @@ const cart = async userId => {
 
 }
 const addcart = async (userId, productId, quantity, option) => await axios.post('http://localhost:5000/cart/add', { userId, productId, quantity, option });
-export default { cart, addcart }
+const removecart = async (userId, productId) => await axios.put('http://localhost:5000/cart/delete', { userId, productId });
+export default { cart, addcart, removecart }

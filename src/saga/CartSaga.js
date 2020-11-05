@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { ADD_CART, FETCH_CART, fetchCartSuccess, fetchCartFailure } from './../action/CartAction'
+import { ADD_CART, FETCH_CART, fetchCartSuccess, fetchCartFailure, REMOVE_CART } from './../action/CartAction'
 import api from './CartApi'
 function* getCart(action) {
     console.log("USER ID IS getcart saga" + action.userId)
@@ -42,10 +42,26 @@ function* addCart(action) {
         console.log(err);
     }
 }
+
+function* removeCart(action) {
+
+    try {
+        let userId = action.userId
+        let productId = action.productId
+        const data = yield call(api.removecart, userId, productId);
+        action.onSuccess(data)
+
+    } catch (err) {
+        //yield put(createProductFailure());
+        action.onFailure(err)
+        console.log(err);
+    }
+}
 export default function* CartSaga() {
 
     yield takeLatest(FETCH_CART, getCart);
 
     yield takeLatest(ADD_CART, addCart);
+    yield takeLatest(REMOVE_CART, removeCart)
 
 }

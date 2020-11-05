@@ -1,4 +1,4 @@
-import { ADD_CART, ADD_CART_SUCCESS, FETCH_CART, FETCH_CART_SUCCESS, FETCH_CART_FAILURE } from './../action/CartAction'
+import { ADD_CART, ADD_CART_SUCCESS, FETCH_CART, FETCH_CART_SUCCESS, FETCH_CART_FAILURE, REMOVE_CART, REMOVE_CART_SUCCESS } from './../action/CartAction'
 const initState = {
     cartItems: [],
     cartItemsTotal: 0,
@@ -9,10 +9,12 @@ export default function CartReducer(state = initState, action) {
     switch (action.type) {
         case ADD_CART:
         case FETCH_CART:
+        case REMOVE_CART:
             return {
                 ...state
             }
         case ADD_CART_SUCCESS:
+        case REMOVE_CART_SUCCESS:
             return {
                 ...state,
             }

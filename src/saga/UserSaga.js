@@ -33,7 +33,7 @@ function* login(action) {
         action.onSuccess()
     } catch (err) {
 
-        action.onFailure(err);
+        action.onFailure(err.response.data);
     }
 
 }

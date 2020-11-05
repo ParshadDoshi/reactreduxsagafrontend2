@@ -1,6 +1,6 @@
 
 
-let initState = { products: [], product: {}, loading: true }
+let initState = { products: [], product: {}, loading: true, success: false }
 
 export const ProductReducer = (state = initState, action) => {
 
@@ -34,10 +34,11 @@ export const ProductReducer = (state = initState, action) => {
     case 'CREATE_PRODUCT_SUCCESS':
       return {
         ...state,
-        products: state.products.concat(action.data.product),
+        products: action.data.product ? state.products.concat(action.data.product) : state.products,
         // product: action.data.product,
 
-        loading: false
+        loading: false,
+        success: action.data.success
       }
     case 'EDIT_PRODUCT_SUCCESS':
       let product = action.data.product
@@ -52,7 +53,7 @@ export const ProductReducer = (state = initState, action) => {
       return {
         ...state,
         products: state.products.filter(product => product._id !== action.data.id),
-        product: action.data.product,
+        // product: action.data.product,
 
         loading: false
       }

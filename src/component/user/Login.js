@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import { useToasts } from 'react-toast-notifications'
 import { fetchCart } from '../../action/CartAction';
 import './login.css'
+import * as Yup from "yup";
 
 const formStyle = {
     background: " #333",
@@ -16,12 +17,19 @@ const formStyle = {
 };
 
 export const Login = (props) => {
+    const { addToast } = useToasts()
     const dispatch = useDispatch()
     const location = props.location.pathname
     const userId = useSelector(state => state.UserReducer.id)
-    console.log("USER ID OUT SUCCESS IS" + userId)
-    const onSuccess = () => {
+    const token = useSelector(state => state.UserReducer.token)
 
+    const LoginSchema = Yup.object().shape({
+        email: Yup.string().email().required('Please Enter your Email'),
+        password: Yup.string().required("Password is Required"),
+    });
+    const onSuccess = () => {
+        if (token)
+            dispatch(fetchCart(userId))
         if (location === "/login")
             history.push("/products")
         else
@@ -35,13 +43,14 @@ export const Login = (props) => {
     useEffect(() => {
 
         return () => {
-            dispatch(fetchCart(userId))
+
+            //  dispatch(fetchCart(userId))
         }
     });
 
     const history = useHistory(0)
-    const onFailure = () => {
-
+    const onFailure = (data) => {
+        addToast(data.message, { appearance: data.success, autoDismiss: true, autoDismissTimeOut: 5000 })
     }
     //console.log("LOCATION " + JSON.stringify(props.location.pathname))
 
@@ -53,6 +62,7 @@ export const Login = (props) => {
             password: ''
 
         },
+        validationSchema: LoginSchema,
 
         onSubmit: ({ email, password }) => {
             console.log("SUBMIT IS CALLED")
@@ -75,7 +85,11 @@ export const Login = (props) => {
                             value={formik.values.name}
                             placeholder="Enter E-mail"
                         />
-                    </div></div>
+                    </div>
+                    {formik.errors.email && formik.touched.email ? (
+                        <div>{formik.errors.email}</div>
+                    ) : null}
+                </div>
                 <div className="form-group row">
                     <label htmlFor="price" className="col-sm-2 col-form-label">Password</label>
                     <div className="col-sm-10">
@@ -87,7 +101,11 @@ export const Login = (props) => {
                             value={formik.values.password}
                             placeholder="Enter Password"
                         />
-                    </div></div>
+                    </div>
+                    {formik.errors.password && formik.touched.password ? (
+                        <div>{formik.errors.password}</div>
+                    ) : null}
+                </div>
                 <div className="form-group row">
                     <div className="col-sm-10 offset-sm-2">
                         <button type="submit" className="btn btn-primary">Submit</button></div></div>

@@ -1,11 +1,8 @@
 import { REGISTER_USER, REGISTER_USER_SUCCESS, REGISTER_USER_FAILURE, USER_LOGIN, USER_LOGIN_SUCCESS, USER_LOGIN_FAILURE } from './../action/UserAction'
 
-let token = localStorage.getItem("userToken")
+localStorage.removeItem("userToken")
 
-//let isLoggedIn
-const initState = token
-    ? { isLoggedIn: true, id: undefined }
-    : { isLoggedIn: false, id: undefined };
+const initState = { isLoggedIn: true, id: undefined, token: false }
 
 export const UserReducer = (state = initState, action) => {
 
@@ -33,6 +30,7 @@ export const UserReducer = (state = initState, action) => {
             return {
                 ...state,
                 isLoggedIn: false,
+                token: false
 
             }
         case USER_LOGIN_SUCCESS:
@@ -40,8 +38,8 @@ export const UserReducer = (state = initState, action) => {
             return {
                 ...state,
                 isLoggedIn: true,
-                id: action.data.user._id
-
+                id: action.data.user._id,
+                token: true
             }
         case USER_LOGIN_FAILURE:
             return {
@@ -54,7 +52,8 @@ export const UserReducer = (state = initState, action) => {
             return {
                 ...state,
                 id: undefined,
-                isLoggedIn: false
+                isLoggedIn: false,
+                token: false
             }
         default:
 

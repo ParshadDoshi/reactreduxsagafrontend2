@@ -20,7 +20,6 @@ const deleteproduct = async _id => {
 }
 
 const addImage = async imagefile => {
-    console.log("In add Image" + imagefile)
 
     var formData = new FormData();
     formData.append('imagefile', imagefile);

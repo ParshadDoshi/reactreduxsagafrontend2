@@ -4,13 +4,14 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { logout } from './../action/UserAction'
 import CartSummary from "../component/cart/CartSummary";
-import { fetchCart } from "../action/CartAction";
-export function Header() {
 
+export function Header() {
+    const userId = useSelector(state => state.UserReducer.id)
     const history = useHistory()
 
     const dispatch = useDispatch()
     const isLoggedIn = useSelector(state => state.UserReducer.isLoggedIn)
+    const token = useSelector(state => state.UserReducer.token)
 
     const logoutUser = () => {
 
@@ -19,7 +20,6 @@ export function Header() {
     }
 
     useEffect(() => {
-
     }, [isLoggedIn])
 
     return (
@@ -27,7 +27,7 @@ export function Header() {
             <div style={{ display: "flex", flexDirection: "row" }}>
                 <div style={{ color: "blue" }}> My WebStore</div>
                 <div style={{ marginLeft: "auto", marginRight: "10px" }}>
-                    {(!isLoggedIn) ? (<Link to="/login">Login</Link>) : (<button onClick={logoutUser}>Logout</button>)}
+                    {(!token) ? (<Link to="/login">Login</Link>) : (<button onClick={logoutUser}>Logout</button>)}
                     <Link to="/signup" style={{ margin: "10px" }}>SignUp</Link>
                 </div>
             </div>

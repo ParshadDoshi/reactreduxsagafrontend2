@@ -2,10 +2,10 @@ import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux'
 import swal from 'sweetalert';
-import { addCart, fetchCart } from '../../action/CartAction';
+import { addCart, fetchCart, removeCart } from '../../action/CartAction';
 export default function CartDetailsRows({ cart, cartPrice, userId }) {
     //const userId = useSelector(state => state.UserReducer.id)
-
+    let message
     const dispatch = useDispatch()
     //const cartItemsTotal = useSelector(state => state.CartReducer.cartItemsTotal)
     let eventCalled = false
@@ -14,14 +14,11 @@ export default function CartDetailsRows({ cart, cartPrice, userId }) {
         dispatch(fetchCart(userId))
         swal({
             title: " Cart  Updated! ",
-            text: "Cartis Updated succesfully!",
+            text: message,
             icon: "success",
             button: "OK",
         });
     }
-    useEffect(() => {
-
-    }, [])
 
     /* const handleChange = item => (event) => {
         alert("In FOrmik Handle change" + event.target.value + "ID" + item)
@@ -38,6 +35,7 @@ export default function CartDetailsRows({ cart, cartPrice, userId }) {
             });
         }
         else {
+            message = "item is added to cart"
             eventCalled = true
             dispatch(addCart(userId, productId, quantity, "update", onSuccess, onFailure))
         }
@@ -60,7 +58,10 @@ export default function CartDetailsRows({ cart, cartPrice, userId }) {
                     <td>${item.total.toFixed(2)}</td>
                     <td>
                         <button className="btn btn-sm btn-danger"
-                            onClick={() => { }}>
+                            onClick={() => {
+                                message = "item is removed from cart"
+                                dispatch(removeCart(userId, item.id, onSuccess, onFailure))
+                            }}>
                             Remove
 </button>
                     </td>

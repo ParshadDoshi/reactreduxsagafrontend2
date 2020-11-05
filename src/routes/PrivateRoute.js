@@ -6,7 +6,8 @@ import { useHistory } from 'react-router-dom';
 import { Login } from '../component/user/Login';
 export const PrivateRoute = ({ component: Component, ...rest }) => {
 
-    const token = localStorage.getItem('userToken')
+    //const token = localStorage.getItem('userToken')
+    const token = useSelector(state => state.UserReducer.token)
 
     return (
         <Route {...rest} render={(props) => (token)

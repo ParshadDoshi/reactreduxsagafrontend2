@@ -45,12 +45,14 @@ export const fetchProductSuccess = data => ({ type: FETCH_PRODUCT_SUCCESS, data 
 
 export const fetchProductFailure = () => ({ type: FETCH_PRODUCT_FAILURE });
 
-export const createProduct = ({ name, price, imagename }) => {
+export const createProduct = ({ name, price, imagename }, onSuccess, onFailure) => {
     return {
         type: CREATE_PRODUCT,
         name,
         imagename,
-        price
+        price,
+        onSuccess,
+        onFailure
 
     };
 }
